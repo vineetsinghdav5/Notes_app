@@ -1,7 +1,18 @@
 # Notes_app
 ## Project Overview
 
-This project is a modern, feature-rich Notes application built using a robust stack of web technologies. It leverages **Node.js** and **Express.js** for the backend, and **MongoDB** for the database, providing a seamless and efficient user experience. User authentication is handled securely through **Google OAuth**, ensuring ease of access while maintaining data privacy.
+This project is a modern, feature-rich Notes application built using a robust stack of web technologies. It leverages **Node.js** and **Express.js** for the backend, **MongoDB** for the database, and **Mongoose** as the Object Document Modeling (ODM) library, providing a seamless and efficient user experience. User authentication is handled securely through **Google OAuth**, ensuring ease of access while maintaining data privacy.
+
+## Backend Technologies
+
+The backend of the application is developed with:
+
+- **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine, used for server-side scripting.
+- **Express.js**: A minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+
+## Database and ODM
+
+For the database, the application uses **MongoDB**, a NoSQL database that stores data in flexible, JSON-like documents. **Mongoose** is used as the ODM library, providing a higher-level abstraction on top of MongoDB to simplify database interactions and enforce data schemas.
 
 ## Frontend Technologies
 
