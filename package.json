@@ -1,16 +1,11 @@
 {
   "name": "notes",
   "version": "1.0.0",
-  "description": "A Notes App with Google OAuth and MongoDB",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon app.js"
   },
-  "keywords": ["notes", "express", "mongodb", "passport", "google-oauth"],
-  "author": "Vineet Singh",
-  "license": "ISC",
   "dependencies": {
     "connect-mongo": "^5.1.0",
     "dotenv": "^16.4.5",
@@ -27,4 +22,3 @@
     "nodemon": "^3.1.4"
   }
 }
-
