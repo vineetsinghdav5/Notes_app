@@ -9,18 +9,27 @@ const session = require('express-session');
 const passport = require('passport');
 const Mongostore = require('connect-mongo');
 
-
 const app = express();
-const port = process.env.PORT || 3003; // Small change here
+const port = process.env.PORT || 3003;
+
+if (process.env.NODE_ENV === 'production') {
+  // If behind a proxy (Render), enable trust proxy so secure cookies work
+  app.set('trust proxy', 1);
+}
 
 app.use(session({
-    secret:'keyboard cat',
+    secret: process.env.SESSION_SECRET || 'keyboard cat', // use env var in production
     resave: false,
     saveUninitialized: true,
-    store:Mongostore.create({
-        mongoUrl:process.env.MONGODB_URI
+    store: Mongostore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        collectionName: 'sessions'
     }),
-    // cookie: {maxAge: new Date (Date.now()+(3600000)) }
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // send cookie only over https when in prod
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 // 1 day
+    }
 }));
 
 app.use(passport.initialize());
