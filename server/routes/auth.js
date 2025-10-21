@@ -34,11 +34,10 @@ passport.use(new GoogleStrategy({
 router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 // Callback
-router.get('/google/callback', passport.authenticate('google', {
+router.get('/auth/google/callback', passport.authenticate('google', {
   failureRedirect: '/',
   successRedirect: '/dashboard'
 }));
-
 // Logout
 router.get('/logout', (req, res) => {
   req.session.destroy(err => {
