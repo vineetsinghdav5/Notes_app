@@ -1,10 +1,8 @@
 require('dotenv').config();
-
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 const connectDB = require('./server/config/db');
-
 const session = require('express-session');
 const passport = require('passport');
 const Mongostore = require('connect-mongo');
@@ -12,54 +10,58 @@ const Mongostore = require('connect-mongo');
 const app = express();
 const port = process.env.PORT || 3003;
 
+// Trust proxy for secure cookies on Render
 if (process.env.NODE_ENV === 'production') {
-  // If behind a proxy (Render), enable trust proxy so secure cookies work
   app.set('trust proxy', 1);
 }
 
+// Sessions
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'keyboard cat', // use env var in production
-    resave: false,
-    saveUninitialized: true,
-    store: Mongostore.create({
-        mongoUrl: process.env.MONGODB_URI,
-        collectionName: 'sessions'
-    }),
-    cookie: {
-      secure: process.env.NODE_ENV === 'production', // send cookie only over https when in prod
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 // 1 day
-    }
+  secret: process.env.SESSION_SECRET || 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  store: Mongostore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    collectionName: 'sessions'
+  }),
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+  }
 }));
 
+// Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.urlencoded({extended: true}));
+// Body parsers
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(methodOverride("_method"));
+app.use(methodOverride('_method'));
 
-//connect DB
+// Connect to MongoDB
 connectDB();
 
 // Static files
 app.use(express.static('public'));
 
-// Templating engine
+// EJS templates
 app.use(expressLayouts);
 app.set('layout', './layouts/main');
 app.set('view engine', 'ejs');
 
-//routes
-app.use('/',require('./server/routes/auth'));
-app.use('/',require('./server/routes/index'));
+// Routes
+app.use('/', require('./server/routes/auth'));
 app.use('/', require('./server/routes/dashboard'));
+app.use('/', require('./server/routes/index'));
 
-//handle 404
-app.get('*',function(req,res){
-    res.status(404).render('404')
-})
+// 404 page
+app.get('*', (req, res) => {
+  res.status(404).render('404');
+});
 
+// Start server
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });
